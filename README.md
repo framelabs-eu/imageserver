@@ -5,7 +5,7 @@ This image server can serve images to ArtFrames when they are configured in **Mo
 # Usage
 
 1. Prepare images using the [online image converter](https://framelabs.eu/wp-content/uploads/converter.html).
-2. Run ```./imageserver.py [path_to_converted_files]```
+2. Run ```./imageserver.py [path to converted files]```
 3. Configure the ArtFrame to use the IP and port of the machine that imageserver.py was started on
 
 # Help
