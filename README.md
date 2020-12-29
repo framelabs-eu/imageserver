@@ -10,7 +10,7 @@ This image server can serve images to ArtFrames when they are configured in **Mo
 
 # Help
 
-```bash
+```
 imageserver.py [-h] [--port PORT] [path]
 
 positional arguments:
@@ -20,4 +20,3 @@ optional arguments:
   -h, --help            show this help message and exit
   --port PORT, -p PORT  port that the server will listen on (default: 8090)
 ```
-
