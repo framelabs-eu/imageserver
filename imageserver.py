@@ -6,52 +6,61 @@ import argparse
 import os
 from pathlib import Path
 import random
-import zlib
+
+from imageprepare import prepare
+
 
 serve_path = None
 
-
-def get_content(file):
-    if not file:
+def get_content(filepath, size):
+    try:
+        rawz = prepare(filepath, size)
+        return rawz
+    except Exception:
+        print(f'File \'{filepath}\' is not supported')
         return None
 
-    with open(file, 'rb') as content_file:
-        content = content_file.read()  # TODO Don't read everything at once?
-        try:
-            decompressor = zlib.decompressobj()
-            content_decompressed = decompressor.decompress(content, 1)
-            return content
-        except Exception:
-            print(f'File \'{file}\' is not supported')
-            return None
-
-
-def random_file_content(path):
+def random_file_content(path, size):
     for root, _, files in os.walk(path):
         # print(files)
         if not len(files):
-            print(f'Path \'{path}\' is empty')
+            print(f'No files at \'{path}\'')
             return None
         random.shuffle(files)
         for filename in files:
             filepath = os.path.join(root, filename)
-            content = get_content(filepath)
+            content = get_content(filepath, size)
             if content:
                 return filename, content
     return None
 
+def parse_size(headers):
+    try:
+        width = int(headers['Width'])
+        height = int(headers['Height'])
+        return (width, height)
+    except:
+        return None
 
 class ImageRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            response = random_file_content(serve_path)
+            size = parse_size(self.headers)
+            if not size:
+                error = "Headers 'Width' and 'Height' required"
+                print(error)
+                self.send_response(412)
+                self.wfile.write(error.encode())
+                self.end_headers()
+                return
+            response = random_file_content(serve_path, size)
             if not response:
                 print('No serveable file found')
                 self.send_response(404)
                 self.end_headers()
             else:
                 filename, content = response
-                print(f'Serving \'{filename}\'')
+                print(f'Serving \'{filename}\' at {size}')
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(content)
