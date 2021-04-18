@@ -43,18 +43,15 @@ def random_file_content(path):
 
 class ImageRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        topic = self.path[1:]
-
         try:
-            # TODO: Is a path attack possible here?
-            response = random_file_content(serve_path / topic)
+            response = random_file_content(serve_path)
             if not response:
-                print(f'Topic not found: \'{topic}\'')
+                print('No serveable file found')
                 self.send_response(404)
                 self.end_headers()
             else:
                 filename, content = response
-                print(f'Serving topic \'{topic}\': \'{filename}\'')
+                print(f'Serving \'{filename}\'')
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(content)
