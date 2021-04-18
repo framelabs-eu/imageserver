@@ -10,8 +10,6 @@ import random
 from imageprepare import prepare
 
 
-serve_path = None
-
 def get_content(filepath, size):
     try:
         rawz = prepare(filepath, size)
@@ -53,7 +51,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(error.encode())
                 self.end_headers()
                 return
-            response = random_file_content(serve_path, size)
+            response = random_file_content(self.serve_path, size)
             if not response:
                 print('No serveable file found')
                 self.send_response(404)
@@ -75,8 +73,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     port = args.port
-    serve_path = Path(args.path)
-    print(f'Serving \'{serve_path.resolve()}\' on port {port}')
+    ImageRequestHandler.serve_path = Path(args.path).resolve()
+    print(f'Serving \'{ImageRequestHandler.serve_path}\' on port {port}')
 
     httpd = ThreadingHTTPServer(('', port), ImageRequestHandler)
     httpd.serve_forever()
