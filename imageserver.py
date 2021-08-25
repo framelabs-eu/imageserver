@@ -7,12 +7,12 @@ import os
 from pathlib import Path
 import random
 
-from imageprepare import prepare
+from imageprepare import prepare_file
 
 
 def get_content(filepath, size):
     try:
-        rawz = prepare(filepath, size)
+        rawz = prepare_file(filepath, size)
         return rawz
     except Exception:
         print(f'File \'{filepath}\' is not supported')

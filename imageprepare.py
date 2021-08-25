@@ -51,9 +51,7 @@ def preprocessing_needed(im, size):
         return True
     return False
 
-def prepare(filepath, size):
-    im = Image.open(filepath)
-
+def prepare_image(im, size):
     if preprocessing_needed(im, size):
         print(f'Preprocessing needed ...')
 
@@ -75,3 +73,7 @@ def prepare(filepath, size):
 
     raw = to_raw(im)
     return zlib.compress(raw, level=9)
+
+def prepare_file(filepath, size):
+    im = Image.open(filepath)
+    return prepare_image(im, size)
