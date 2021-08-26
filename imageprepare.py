@@ -59,6 +59,8 @@ def prepare_image(im, size):
         crop = calculate_crop_area(im.size, size)
         im = im.resize(size, resample=Image.LANCZOS, box=crop)
 
+        # grayscale. this mainly prevents image artifacts
+        im = im.convert('I')
         # remove alpha channel to enable conversion to palette
         im = im.convert('RGB')
 
