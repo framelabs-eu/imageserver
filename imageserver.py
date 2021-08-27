@@ -7,18 +7,18 @@ import os
 from pathlib import Path
 import random
 
-from imageprepare import prepare_file
+from imageprepare import prepare_file, defconfig
 
 
-def get_content(filepath, size):
+def get_content(filepath, config):
     try:
-        rawz = prepare_file(filepath, size)
+        rawz = prepare_file(filepath, config)
         return rawz
     except Exception:
         print(f'File \'{filepath}\' is not supported')
         return None
 
-def random_file_content(path, size):
+def random_file_content(path, config):
     for root, _, files in os.walk(path):
         # print(files)
         if not len(files):
@@ -27,38 +27,43 @@ def random_file_content(path, size):
         random.shuffle(files)
         for filename in files:
             filepath = os.path.join(root, filename)
-            content = get_content(filepath, size)
+            content = get_content(filepath, config)
             if content:
                 return filename, content
     return None
 
-def parse_size(headers):
+def parse_configuration(headers):
+    config = defconfig()
     try:
         width = int(headers['Width'])
         height = int(headers['Height'])
-        return (width, height)
+        config.size = (width, height)
+        config.orientation = int(headers['Orientation'])
     except:
-        return None
+        pass
+    return config
 
 class ImageRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            size = parse_size(self.headers)
-            if not size:
-                error = "Headers 'Width' and 'Height' required"
+            config = parse_configuration(self.headers)
+            if not config.size:
+                error = "Headers 'Width' and 'Height' required, 'Orientation' optional"
                 print(error)
                 self.send_response(412)
                 self.wfile.write(error.encode())
                 self.end_headers()
                 return
-            response = random_file_content(self.serve_path, size)
+            response = random_file_content(self.serve_path, config)
             if not response:
-                print('No serveable file found')
+                error = 'No serveable file found'
+                print(error)
                 self.send_response(404)
+                self.wfile.write(error.encode())
                 self.end_headers()
             else:
                 filename, content = response
-                print(f'Serving \'{filename}\' at {size}')
+                print(f'Serving \'{filename}\' at {config.size}, rotation: {config.orientation}')
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(content)

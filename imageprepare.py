@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 
 from PIL import Image
+from collections import namedtuple
 import math
 import zlib
+
+
+def defconfig():
+    config = namedtuple('config', [])
+    config.size = None
+    config.orientation = 0
+    return config
 
 def grayscale_palette():
     palette = []
@@ -51,24 +59,25 @@ def preprocessing_needed(im, size):
         return True
     return False
 
-def prepare_image(im, size):
-    if preprocessing_needed(im, size):
-        print(f'Preprocessing needed ...')
+def prepare_image(im, config):
+    print(f'Processing ...')
 
-        # crop & resize
-        crop = calculate_crop_area(im.size, size)
-        im = im.resize(size, resample=Image.LANCZOS, box=crop)
+    # crop & resize
+    crop = calculate_crop_area(im.size, config.size)
+    im = im.resize(config.size, resample=Image.LANCZOS, box=crop)
 
-        # grayscale. this mainly prevents image artifacts
-        im = im.convert('I')
-        # remove alpha channel to enable conversion to palette
-        im = im.convert('RGB')
+    # grayscale. this mainly prevents image artifacts
+    im = im.convert('I')
+    # remove alpha channel to enable conversion to palette
+    im = im.convert('RGB')
+    # 4-bit grayscale & dither
+    palette = Image.new('P', (1, 1))
+    palette.putpalette(grayscale_palette())
 
-        # 4-bit grayscale & dither
-        palette = Image.new('P', (1, 1))
-        palette.putpalette(grayscale_palette())
+    im = im.quantize(palette=palette, dither=Image.FLOYDSTEINBERG)
 
-        im = im.quantize(palette=palette, dither=Image.FLOYDSTEINBERG)
+    if config.orientation:
+        im = im.transpose(Image.ROTATE_90)
 
     # show image for debugging purposes
     # im.show()
@@ -76,6 +85,6 @@ def prepare_image(im, size):
     raw = to_raw(im)
     return zlib.compress(raw, level=9)
 
-def prepare_file(filepath, size):
+def prepare_file(filepath, config):
     im = Image.open(filepath)
-    return prepare_image(im, size)
+    return prepare_image(im, config)
