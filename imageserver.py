@@ -1,37 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
-import random
 
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from collections import namedtuple
 from pathlib import Path
 
-from imageprepare import prepare_file
+import method
 
-
-def get_content(filepath, config):
-    try:
-        rawz = prepare_file(filepath, config)
-        return rawz
-    except Exception:
-        print(f'File \'{filepath}\' is not supported')
-        return None
-
-def random_file_content(path, config):
-    for root, _, files in os.walk(path):
-        # print(files)
-        if not len(files):
-            return (404, f'No files at \'{path}\''.encode())
-        random.shuffle(files)
-        for filename in files:
-            filepath = os.path.join(root, filename)
-            content = get_content(filepath, config)
-            if content:
-                print(f'Serving {filename}')
-                return (200, content)
-    return (404, f'No servable files at \'{path}\''.encode())
 
 def defconfig():
     config = namedtuple('config', [])
@@ -63,7 +39,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
 
-            status, content = random_file_content(self.serve_path, config)
+            status, content = self.method(self.serve_path, config)
             self.send_response(status)
             print(f'Status: {status}')
             if status != 200:
@@ -81,6 +57,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     port = args.port
+    ImageRequestHandler.method = staticmethod(method.random_file_content)
     ImageRequestHandler.serve_path = Path(args.path).resolve()
     print(f'Serving \'{ImageRequestHandler.serve_path}\' on port {port}')
 
