@@ -1,14 +1,7 @@
 from PIL import Image
-from collections import namedtuple
 import math
 import zlib
 
-
-def defconfig():
-    config = namedtuple('config', [])
-    config.size = None
-    config.orientation = 0
-    return config
 
 def grayscale_palette():
     palette = []

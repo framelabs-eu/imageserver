@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
-from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
-
 import argparse
 import os
-from pathlib import Path
 import random
 
-from imageprepare import prepare_file, defconfig
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+from collections import namedtuple
+from pathlib import Path
+
+from imageprepare import prepare_file
 
 
 def get_content(filepath, config):
@@ -22,15 +23,21 @@ def random_file_content(path, config):
     for root, _, files in os.walk(path):
         # print(files)
         if not len(files):
-            print(f'No files at \'{path}\'')
-            return None
+            return (404, f'No files at \'{path}\''.encode())
         random.shuffle(files)
         for filename in files:
             filepath = os.path.join(root, filename)
             content = get_content(filepath, config)
             if content:
-                return filename, content
-    return None
+                print(f'Serving {filename}')
+                return (200, content)
+    return (404, f'No servable files at \'{path}\''.encode())
+
+def defconfig():
+    config = namedtuple('config', [])
+    config.size = None
+    config.orientation = 0
+    return config
 
 def parse_configuration(headers):
     config = defconfig()
@@ -47,6 +54,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             config = parse_configuration(self.headers)
+            print(f'Request for {config.size}, rotation: {config.orientation}')
             if not config.size:
                 error = "Headers 'Width' and 'Height' required, 'Orientation' optional"
                 print(error)
@@ -54,19 +62,14 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(error.encode())
                 self.end_headers()
                 return
-            response = random_file_content(self.serve_path, config)
-            if not response:
-                error = 'No serveable file found'
-                print(error)
-                self.send_response(404)
-                self.wfile.write(error.encode())
-                self.end_headers()
-            else:
-                filename, content = response
-                print(f'Serving \'{filename}\' at {config.size}, rotation: {config.orientation}')
-                self.send_response(200)
-                self.end_headers()
-                self.wfile.write(content)
+
+            status, content = random_file_content(self.serve_path, config)
+            self.send_response(status)
+            print(f'Status: {status}')
+            if status != 200:
+                print(f'Error: {content.decode()}')
+            self.wfile.write(content)
+            self.end_headers()
         except Exception as e: # i.e. ConnectionResetError, BrokenPipe
             print(f'Error occured: {e}')
 
