@@ -39,8 +39,10 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
 
-            status, content = self.method(self.serve_path, config)
+            status, filename, content = self.method(self.serve_path, config)
             self.send_response(status)
+            self._headers_buffer.append(f'Location: {filename}\r\n'.encode()) # use non-standard-compliant utf8 instead of latin1
+            self.end_headers()
             print(f'Status: {status}')
             if status != 200:
                 print(f'Error: {content.decode()}')
