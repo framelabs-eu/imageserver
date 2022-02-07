@@ -46,12 +46,12 @@ def preprocessing_needed(im, size):
         print(f'Image has wrong dimensions: {im.size}, requested is {size}')
         return True
     if hasattr(im, 'depth') and im.depth != 4:
-        print(f'Image needs to have 4 bit depth')
+        print('Image needs to have 4 bit depth')
         return True
     return False
 
 def prepare_image(im, config):
-    print(f'Processing ...')
+    print('Processing ...')
 
     # crop & resize
     crop = calculate_crop_area(im.size, config.size)
