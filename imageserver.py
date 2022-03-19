@@ -39,7 +39,7 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
 
-            status, filename, content = self.method(self.serve_path, config)
+            status, filename, content = self.method(config)
             self.send_response(status)
             self._headers_buffer.append(f'Location: {filename}\r\n'.encode()) # use non-standard-compliant utf8 instead of latin1
             self.end_headers()
@@ -59,9 +59,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     port = args.port
-    ImageRequestHandler.method = staticmethod(method.random_file_content)
-    ImageRequestHandler.serve_path = Path(args.path).resolve()
-    print(f'Serving \'{ImageRequestHandler.serve_path}\' on port {port}')
+    serve_path = Path(args.path).resolve()
+    ImageRequestHandler.method = staticmethod(lambda config: method.random_file_content(serve_path, config))
+    print(f'Serving \'{serve_path}\' on port {port}')
 
     httpd = ThreadingHTTPServer(('', port), ImageRequestHandler)
     httpd.serve_forever()
