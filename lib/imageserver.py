@@ -6,7 +6,7 @@ from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from collections import namedtuple
 from pathlib import Path
 
-import method
+# import method
 
 
 def defconfig():
