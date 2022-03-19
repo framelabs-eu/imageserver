@@ -1,8 +1,11 @@
+import sys
+sys.path.append("../../")
+
 import os
 import random
-
-from imageprepare import prepare_file
 from pathlib import Path
+
+from lib.imageprepare import prepare_file
 
 
 def get_content(filepath, config):
@@ -13,7 +16,7 @@ def get_content(filepath, config):
         print(f'File \'{filepath}\' is not supported')
         return None
 
-def random_file_content(path, config):
+def random_file_response(path, config):
     for root, _, files in os.walk(path):
         # print(files)
         if not len(files):
