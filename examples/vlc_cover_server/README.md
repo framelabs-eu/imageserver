@@ -1,6 +1,7 @@
 # VLC Cover Art Server
 
 This tool serves the cover art of the currently playing song in VLC to ArtFrame devices.
+Additionally it hints the device to request the next cover art as soon as next song starts playing.
 
 # Usage
 
