@@ -31,7 +31,7 @@ def calculate_crop_area(size_in, size_request):
 def to_raw(image):
     px = image.load()
     width, height = image.size
-    buf = bytearray(width * height)
+    buf = bytearray(width * height // 2)
 
     for y in range(height):
         for x in range(0, width, 2):
