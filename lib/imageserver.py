@@ -41,6 +41,5 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
             if status != 200:
                 print(f'Error: {content.decode()}')
             self.wfile.write(content)
-            self.end_headers()
         except Exception as e: # i.e. ConnectionResetError, BrokenPipe
             print(f'Error occured: {e}')
