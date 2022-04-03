@@ -55,4 +55,4 @@ def vlc_cover_gen(url, password):
 if __name__ == '__main__':
     im, remaining = vlc_cover_gen('127.0.0.1:8080', ' ')
     print(f'Remaining secs: {remaining}')
-    im.show()
+    # im.show()
