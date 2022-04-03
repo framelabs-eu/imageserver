@@ -18,8 +18,9 @@ ARTFRAME_LIFECYCLE = 6  # the ArtFrame takes 2 secs to boot, and approximately a
 def vlc_cover_response(vlcurl, password, config):
     im, remaining = vlc_cover_gen(vlcurl, password)
     out = prepare_image(im, config)
+    sleep_time = max(remaining - ARTFRAME_LIFECYCLE, 0)
 
-    headers = [('Cache-Control', f'max-age={remaining - ARTFRAME_LIFECYCLE}')]
+    headers = [('Cache-Control', f'max-age={sleep_time}')]
     return (200, headers, out)
 
 
