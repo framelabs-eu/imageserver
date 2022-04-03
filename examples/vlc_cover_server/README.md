@@ -23,3 +23,7 @@ optional arguments:
   --vlcurl VLCURL, -u VLCURL
                         Url of VLC's web interface (default: 127.0.0.1:8080)
 ```
+
+# Result
+
+![Demo](cover-metallica-the-unforgive-iii.jpg)
