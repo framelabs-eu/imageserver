@@ -6,7 +6,7 @@ This is a library and example applications for serving content to [ArtFrame](htt
 
 1. Configure your ArtFrame to *Mode: WiFi*
 2. Set the Image Server URL to point to your computer (i.e. "http://192.168.0.100:8090/")
-3. Install dependencies: ```pip3 install pillow```
+3. Install dependencies: ```pip3 install -r requirements.txt```
 4. Run one of the examples
 
 # Examples
