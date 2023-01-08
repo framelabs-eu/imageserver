@@ -16,3 +16,6 @@ Serve image files from a folder.
 
 ## [VLC Cover Art Server](examples/vlc_cover_server)
 Serve the cover art of the song currently playing in VLC.
+
+## [Google Sheet directory Server switch](examples/gsheet_switch)
+Serve image files from a folder selected from Google Sheet cell.
