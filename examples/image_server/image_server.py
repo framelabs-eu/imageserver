@@ -10,10 +10,10 @@ from pathlib import Path
 
 from lib.imageserver import ImageRequestHandler
 
-from image_select import random_file_response
+from examples.image_server.image_select import random_file_response
 
 
-if __name__ == '__main__':
+def image_server(response_handler = random_file_response):
     parser = argparse.ArgumentParser(description='ArtFrame image server.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--port', '-p', help='port that the server will listen on', required=False, type=int, default=8090)
     parser.add_argument('path', help='folder that should be served', nargs='?', default='.')
@@ -21,8 +21,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     port = args.port
     serve_path = Path(args.path).resolve()
-    ImageRequestHandler.method = staticmethod(lambda config: random_file_response(serve_path, config))
+
+    ImageRequestHandler.method = staticmethod(lambda config: response_handler(serve_path, config))
     print(f'Serving \'{serve_path}\' on port {port}')
 
     httpd = ThreadingHTTPServer(('', port), ImageRequestHandler)
     httpd.serve_forever()
+
+if __name__ == '__main__':
+    image_server()
