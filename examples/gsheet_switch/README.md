@@ -9,11 +9,17 @@ the preferred subdirectory will be read from a Google Sheet file hosted in your 
 
 4 bit grayscale images with equal dimension to that of your ArtFrame display resolution are served as-is. All other images are resized, cropped to proper dimensions and converted to grayscale with 4 bit depth and dithering.
 
-# Usage
+## Setup
+
+Follow "Quickstart" guide for the [gsheets library](https://pypi.org/project/gsheets/), once you have the `client_secret.json` file from Google Dev Console place it in [this directory](./).
+
+Then copy or rename [gsheet_config-sample.py](./gsheet_config-sample.py) to `gsheet_config.py` and put there the ID and cell where to find the subdirectory selected name
+
+## Usage
 
 1. Run ```./gsheet_switch.py [path to main directory]```
 
-# Help
+## Help
 
 ```
 gsheet_switch.py [-h] [--port PORT] [path]
