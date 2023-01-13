@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageOps
 import math
 import zlib
 
@@ -64,6 +64,9 @@ def prepare_image(im, config):
     # 4-bit grayscale & dither
     palette = Image.new('P', (1, 1))
     palette.putpalette(grayscale_palette())
+
+    if config.autocontrast:
+        im = ImageOps.autocontrast(im, cutoff=config.autocontrast, ignore=None, mask=None, preserve_tone=False)
 
     im = im.quantize(palette=palette, dither=Image.FLOYDSTEINBERG)
 
