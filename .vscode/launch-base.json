@@ -1,0 +1,40 @@
+// Clone this file and remove "-base" from the file name,
+// you can then edit the optional params as they fit your local settings without committing them as it is git ignored
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: image server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/image_server/image_server.py",
+            "args": [
+                "~"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: gsheet switch",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/gsheet_switch/gsheet_switch.py",
+            "args": [
+                "~"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: vlc cover",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/vlc_cover_server/vlc_cover_server.py",
+            "args": [
+                "--password=VLC_PASSWORD_SAMPLE"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ms-python.isort",
+        "jebbs.plantuml",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "sanaajani.taskrunnercode",
+        "davidanson.vscode-markdownlint"
+    ]
+}

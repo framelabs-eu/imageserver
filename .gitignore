@@ -1,4 +1,5 @@
 __pycache__
-.vscode
 client_secret.json
 gsheet_config.py
+tasks.json
+launch.json

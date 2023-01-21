@@ -2,14 +2,17 @@
 
 This is a library and example applications for serving content to [ArtFrame](https://framelabs.eu/) devices.
 
-# Usage
+## Usage
 
+1. Discover your computer local network IP address, can run `ifconfig` or `ipconfig getifaddr en0` on MacOSX terminal or check in you OS network advanced settings GUI
+1. Install dependencies: ```pip3 install -r requirements.txt```
+1. Run one of the examples
 1. Configure your ArtFrame to *Mode: WiFi*
-2. Set the Image Server URL to point to your computer (i.e. "http://192.168.0.100:8090/")
-3. Install dependencies: ```pip3 install -r requirements.txt```
-4. Run one of the examples
+1. Set the Image Server URL to point to your computer (i.e. "http://192.168.0.100:8090/")
 
-# Examples
+if you use [VScode IDE](https://code.visualstudio.com) there are prepared [tasks](.vscode/tasks-base.json) for usage and [launch](.vscode/launch-base.json) config for debugging.
+
+## Examples
 
 ## [Image Server](examples/image_server)
 Serve image files from a folder.

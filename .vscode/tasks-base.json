@@ -1,0 +1,54 @@
+{
+    // Clone this file and remove "-base" from the file name
+    // you can edit the optional params as they fit your local settings without committing them as it is git ignored
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install dependecies ⬇️",
+            "type": "shell",
+            "command": "pip3",
+            "args": [
+                "install", 
+                "-r", 
+                "requirements.txt"
+            ]
+        },
+        {
+            "label": "Run Image server 📁",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/examples/image_server/image_server.py",
+                "~"
+            ]
+        },
+        {
+            "label": "Run Gsheet switch 🗂️",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/examples/gsheet_switch/gsheet_switch.py",
+                "~"
+            ]
+        },
+        {
+            "label": "Run VLC cover server 🎧",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/examples/vlc_cover_server/vlc_cover_server.py",
+                "--password=VLC_PASSWORD_SAMPLE"
+            ]
+        },
+        {
+            "label": "Test image request 🌆",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "${workspaceFolder}/examples/test-image-request.sh"
+            ]
+        }
+    ]
+}
