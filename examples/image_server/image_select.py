@@ -1,6 +1,5 @@
 import os
 import random
-from pathlib import Path
 
 from lib.imageprepare import prepare_file
 

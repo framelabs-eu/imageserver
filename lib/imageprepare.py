@@ -1,5 +1,4 @@
 from PIL import Image, ImageOps
-import math
 import zlib
 
 

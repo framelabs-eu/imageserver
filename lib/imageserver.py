@@ -1,4 +1,4 @@
-from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler
 from collections import namedtuple
 
 
