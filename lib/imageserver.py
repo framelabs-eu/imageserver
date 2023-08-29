@@ -28,8 +28,8 @@ class ImageRequestHandler(BaseHTTPRequestHandler):
                 error = "Headers 'Width' and 'Height' required, 'Orientation' optional"
                 print(error)
                 self.send_response(412)
-                self.wfile.write(error.encode())
                 self.end_headers()
+                self.wfile.write(error.encode())
                 return
 
             status, headers, content = self.method(config)
