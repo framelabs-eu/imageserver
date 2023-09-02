@@ -1,5 +1,4 @@
-from PIL import Image
-import math
+from PIL import Image, ImageOps
 import zlib
 
 
@@ -65,9 +64,12 @@ def prepare_image(im, config):
     palette = Image.new('P', (1, 1))
     palette.putpalette(grayscale_palette())
 
+    if hasattr(config, 'autocontrast'):
+        im = ImageOps.autocontrast(im, cutoff=config.autocontrast, ignore=None, mask=None, preserve_tone=False)
+
     im = im.quantize(palette=palette, dither=Image.FLOYDSTEINBERG)
 
-    if config.orientation:
+    if hasattr(config, 'orientation'):
         im = im.transpose(Image.ROTATE_90)
 
     # show image for debugging purposes

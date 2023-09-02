@@ -1,0 +1,32 @@
+@startuml gsheet
+
+title Switch directory via voice command
+
+actor User #red
+boundary Alexa #LightBlue
+participant IFTTT #WhiteSmoke
+database Gsheet #LightGreen
+participant ArtFrame as AF
+control "Gsheet Python Script" as PS
+
+User -> Alexa: "show monuments"
+activate Alexa
+Alexa -> Alexa: run namesake routine
+Alexa -> IFTTT: trigger IFTTT applet
+deactivate Alexa
+activate IFTTT
+IFTTT -> IFTTT: run applet
+IFTTT -> Gsheet: Update Gsheet\ncell value with\n"monuments"
+deactivate IFTTT
+User -> AF: wait for refresh or push button
+activate AF
+AF -> PS: request new image
+activate PS
+PS -> Gsheet: load Gsheet file
+PS -> PS: read Gsheet data
+PS -> PS: prepare next image\nfrom "monuments" subdir
+PS --> AF: serve image
+deactivate PS
+deactivate AF
+
+@enduml

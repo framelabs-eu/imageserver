@@ -1,1 +1,5 @@
 __pycache__
+client_secret.json
+gsheet_config.py
+tasks.json
+launch.json
