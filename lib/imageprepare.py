@@ -29,14 +29,8 @@ def calculate_crop_area(size_in, size_request):
     return (x, y, x+wo, y+ho)
 
 def to_raw(image):
-    px = image.load()
-    width, height = image.size
-    buf = bytearray(width * height // 2)
-
-    for y in range(height):
-        for x in range(0, width, 2):
-            buf[(y*width+x)//2] = px[x, y] + (px[x+1, y] << 4)
-    return buf
+    raw = image.tobytes()
+    return bytearray(raw[i] | raw[i+1] << 4 for i in range(0, len(raw), 2))
 
 def preprocessing_needed(im, size):
     if im.mode != 'L':
