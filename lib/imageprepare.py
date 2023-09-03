@@ -5,7 +5,7 @@ import zlib
 
 def grayscale_palette():
     palette = []
-    for i in range(0, 255, 16):
+    for i in range(0, 256, 17):
         palette += [i, i, i]
     return palette * 16
 
