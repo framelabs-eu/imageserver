@@ -16,3 +16,6 @@ Serve image files from a folder.
 
 ## [VLC Cover Art Server](examples/vlc_cover_server)
 Serve the cover art of the song currently playing in VLC.
+
+## [Flask Server](examples/flask_server)
+Serve images using Flask.
