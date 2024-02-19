@@ -5,5 +5,5 @@ It serves the image [Glorious-blue-mountain-range.jpg](Glorious-blue-mountain-ra
 
 # Usage
 
-1. Install requirements: pip install flask
+1. Install dependencies: pip install flask
 2. Run ```flask --app flask_server run --host=0.0.0.0```

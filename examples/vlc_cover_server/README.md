@@ -5,9 +5,10 @@ Additionally it hints the device to request the next cover art as soon as next s
 
 # Usage
 
-1. Enable VLC's web interface via _View_ > _Add interface_ > _Web_
-2. Set a password for VLC's web interface via _Settings_ > _Interface_ > _Main interfaces_ > _Lua_ > _Lua HTTP_ > _Password_
-3. Run ```./vlc_cover_server.py -q PASSWORD```, where _PASSWORD_ is the password of VLC's web interface.
+1. Install dependencies: pip install matplotlib
+2. Enable VLC's web interface via _View_ > _Add interface_ > _Web_
+3. Set a password for VLC's web interface via _Settings_ > _Interface_ > _Main interfaces_ > _Lua_ > _Lua HTTP_ > _Password_
+4. Run ```./vlc_cover_server.py -q PASSWORD```, where _PASSWORD_ is the password of VLC's web interface.
 
 # Help
 
