@@ -52,9 +52,8 @@ def preprocessing_needed(im, size):
         return True
     return False
 
-def prepare_image(im, config):
-    print('Processing ...')
 
+def convert_image(im, config):
     # crop & resize
     crop = calculate_crop_area(im.size, config.size)
     im = im.resize(config.size, resample=Image.LANCZOS, box=crop)
@@ -74,7 +73,11 @@ def prepare_image(im, config):
 
     # show image for debugging purposes
     # im.show()
+    return im
 
+
+def prepare_image(im, config):
+    im = convert_image(im, config)
     raw = to_raw(im)
     return zlib.compress(raw, level=9)
 
