@@ -7,7 +7,7 @@ def grayscale_palette():
     palette = []
     for i in range(0, 256, 17):
         palette += [i, i, i]
-    return palette * 16
+    return palette
 
 
 @dataclass
