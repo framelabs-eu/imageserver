@@ -19,3 +19,6 @@ Serve the cover art of the song currently playing in VLC.
 
 ## [Flask Server](examples/flask_server)
 Serve images using Flask.
+
+## [Proxy Server](examples/proxy_server)
+Serve images from 3rd-party image repositories using WSGI.
