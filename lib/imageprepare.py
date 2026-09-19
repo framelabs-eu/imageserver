@@ -1,5 +1,6 @@
 from PIL import Image
 import zlib
+from dataclasses import dataclass, field
 
 
 def grayscale_palette():
@@ -7,6 +8,14 @@ def grayscale_palette():
     for i in range(0, 256, 17):
         palette += [i, i, i]
     return palette * 16
+
+
+@dataclass
+class Config:
+    size: tuple[int, int]
+    orientation: int
+    palette: list[int] = field(default_factory=grayscale_palette)
+
 
 def calculate_crop_area(size_in, size_request):
     wi, hi = size_in
@@ -56,7 +65,7 @@ def prepare_image(im, config):
     im = im.convert('RGB')
     # 4-bit grayscale & dither
     palette = Image.new('P', (1, 1))
-    palette.putpalette(grayscale_palette())
+    palette.putpalette(config.palette)
 
     im = im.quantize(palette=palette, dither=Image.FLOYDSTEINBERG)
 

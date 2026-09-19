@@ -11,9 +11,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    config = parse_configuration(request.headers)
-    if not config.size:
-        return "Headers 'Width' and 'Height' required, 'Orientation' optional", 412
+    try:
+        config = parse_configuration(request.headers.get('Width'), request.headers.get('Height'), request.headers.get('Orientation'))
+    except ValueError:
+        return "Headers 'Width' and 'Height' required, 'Orientation' optional", 400
 
     filepath = 'Glorious-blue-mountain-range.jpg'
     return prepare_file(filepath, config)

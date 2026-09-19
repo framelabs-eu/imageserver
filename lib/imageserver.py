@@ -1,28 +1,30 @@
 from http.server import BaseHTTPRequestHandler
-from collections import namedtuple
+from .imageprepare import Config
+
+WIDTH_DEFAULT = 1200
+HEIGHT_DEFAULT = 825
+ORIENTATION_DEFAULT = 0
+
+WIDTH_RANGE = range(2, 2560 + 1, 2)
+HEIGHT_RANGE = range(1, 1440 + 1)
+ORIENTATION_RANGE = range(0, 360, 90)
 
 
-def defconfig():
-    config = namedtuple('config', [])
-    config.size = None
-    config.orientation = 0
-    return config
+def parse_configuration(width: str | None, height: str | None, orientation: str | None):
+    def parse_int(value_str: str | None, default: int, range: range) -> int:
+        if not value_str:
+            return default
+        value = int(value_str)
+        if value not in range:
+            raise ValueError
+        return value
 
-def parse_configuration(headers):
-    config = defconfig()
-    try:
-        width = int(headers['Width'])
-        height = int(headers['Height'])
-        config.size = (width, height)
-        config.orientation = int(headers['Orientation'])
-    except:
-        pass
-    return config
+    return Config((parse_int(width, WIDTH_DEFAULT, WIDTH_RANGE), parse_int(height, HEIGHT_DEFAULT, HEIGHT_RANGE)), parse_int(orientation, ORIENTATION_DEFAULT, ORIENTATION_RANGE))
 
 class ImageRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            config = parse_configuration(self.headers)
+            config = parse_configuration(self.headers['Width'], self.headers['Height'], self.headers['Orientation'])
             print(f'Request for {config.size}, rotation: {config.orientation}')
             if not config.size:
                 error = "Headers 'Width' and 'Height' required, 'Orientation' optional"
