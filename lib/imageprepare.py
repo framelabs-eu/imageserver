@@ -1,6 +1,7 @@
-from PIL import Image
 import zlib
 from dataclasses import dataclass, field
+
+from PIL import Image, ImageOps
 
 
 def grayscale_palette():
@@ -16,25 +17,6 @@ class Config:
     orientation: int
     palette: list[int] = field(default_factory=grayscale_palette)
 
-
-def calculate_crop_area(size_in, size_request):
-    wi, hi = size_in
-    w, h = size_request
-    ratio_in = wi/hi
-    ratio_out = w/h
-    x = 0
-    y = 0
-    wo = None
-    ho = None
-    if ratio_in > ratio_out:
-        wo = hi*ratio_out
-        ho = hi
-        x = (wi-wo)/2
-    else:
-        wo = wi
-        ho = wi/ratio_out
-        y = (hi-ho)/2
-    return (x, y, x+wo, y+ho)
 
 def to_raw(image):
     raw = image.tobytes()
@@ -55,9 +37,7 @@ def preprocessing_needed(im, size):
 
 def convert_image(im, config):
     # crop & resize
-    crop = calculate_crop_area(im.size, config.size)
-    im = im.resize(config.size, resample=Image.LANCZOS, box=crop)
-
+    im = ImageOps.fit(im, config.size, centering=(0.5, 0.5), method=Image.Resampling.LANCZOS)
     # grayscale. this mainly prevents image artifacts
     im = im.convert('I')
     # remove alpha channel to enable conversion to palette
